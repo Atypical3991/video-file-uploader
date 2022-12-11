@@ -26,7 +26,7 @@ jobs:
       - name: Run Docker Compose
         run: docker-compose up -d
       #- name: Build docker tester
-      - name: Run config check
+      - name: Run configs check
         run: newman run test.postman_collection.json
       - name: Stop containers
         if: always()

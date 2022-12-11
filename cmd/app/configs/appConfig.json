@@ -1,0 +1,18 @@
+{
+  "db" : {
+    "mongoDB" : {
+      "dbs" : {
+        "videoCatalogueDB" : "VideoCatalogueDB"
+      },
+      "collections" : {
+        "videoCatalogueCollection": "VideoCatalogueColl",
+        "videFilesCollection" : "fs.files"
+      },
+      "poolSize" : 5
+    }
+  },
+  "logger" : {
+    "outfile" : "app.log",
+    "level": "info"
+  }
+}

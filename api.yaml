@@ -29,7 +29,7 @@ paths:
                 type: string
           content:
             video/mp4:  # foo.mp4, foo.mpg4
-              schema: 
+              schema:
                 type: string
                 format: binary
             video/mpeg: # bar.mpg bar.mpeg
@@ -38,6 +38,10 @@ paths:
                 format: binary
         '404':
           description: File not found
+        '500':
+          description: Internal server error
+        '400':
+          description:  Bad request
     delete:
       description: Delete a video file
       parameters:
@@ -51,6 +55,61 @@ paths:
           description: File was successfully removed
         '404':
           description: File not found
+        '500':
+          description: Internal server error
+        '400':
+          description: Bad request
+  /files/locate/{fileid}:
+    get:
+      tags:
+        - files > {fileid}
+      summary: /files/locate/:fileid
+      description: To locate recently uploded file
+      parameters:
+        - name: Accept
+          in: header
+          schema:
+            type: string
+          example: application/json
+        - name: fileid
+          in: path
+          schema:
+            type: string
+          required: true
+          description: '(Required) '
+          example: nostrud est fugiat
+      responses:
+        '200':
+          description: OK
+          headers:
+            Content-Type:
+              schema:
+                type: string
+                example: application/json
+          content:
+            application/json:
+              schema:
+                type: object
+              example:
+                fileData:
+                  FileId: 636c12b458afa6a1daa3746d
+                  Name: sample_960x400_ocean_with_audio.mpeg
+                  Size: 8409088
+                  CreatedAt: '2022-11-09T20:51:00.376Z'
+                  FileType: video/mpeg
+                  Hash: f1effd2961f47febbec929cf339a36879c180f3a
+        '404':
+          description: Not Found
+          headers:
+            Content-Type:
+              schema:
+                type: string
+                example: text/plain
+          content:
+            text/plain:
+              schema:
+                type: string
+              example: nostrud est fugiat
   /files:
     post:
       description: Upload a video file
@@ -79,6 +138,8 @@ paths:
           description: File exists
         '415':
           description: Unsupported Media Type
+        '500':
+          description: Internal server error
     get:
       description: List uploaded files
       responses:
@@ -86,11 +147,12 @@ paths:
           description: File list
           content:
             application/json:
-              schema: 
+              schema:
                 type: array
                 items:
                   $ref: '#/components/schemas/UploadedFile'
-
+        '500':
+          description: Internal server error
 components:
   schemas:
     UploadedFile:

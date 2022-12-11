@@ -1,1 +1,35 @@
-version: "3.8"
+# Docker Compose file Reference (https://docs.docker.com/compose/compose-file/)
+
+version: '3.8'
+
+# Define services
+services:
+
+  # App Service
+  app:
+    # Configuration for building the docker image for the service
+    build:
+      context: . # Use an image built from the specified dockerfile in the current directory.
+      dockerfile: Dockerfile
+    ports:
+      - "8080:8080" # Forward the exposed port 8080 on the container to port 8080 on the host machine
+    restart: unless-stopped
+    depends_on:
+      - mongo # This service depends on mongo. Start that first.
+    environment: # Pass environment variables to the service
+      MONGODB_URI: mongodb://mongo:27017
+    networks: # Networks to join (Services on the same network can communicate with each other using their name)
+      - backend
+
+  # Mongo Service   
+  mongo:
+    image: mongo # Use a public Mongo image to build the Mongo service    
+    environment:
+      MONGO_INITDB_DATABASE: VideoCatalogueManager
+    ports:
+      - "27017:27017"
+    networks:
+      - backend
+
+networks:
+  backend:   
