@@ -1,2 +1,2 @@
 # video-file-uploader
-A CRUD application written in Golang, which has functionalities related to Video File uploading.
+An application in GoLang to upload larger video files in different formats.
